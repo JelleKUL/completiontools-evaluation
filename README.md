@@ -4,13 +4,9 @@ The evaluation code for the completion tools
 ## Getting Started
 This document is meant to keep track of all your work, use it to track sources, progress and problems.
 
-### Open3d
-Most of the code will be using the open-source package [open3d](www.open3d.com). Take a look at the documentation for more info: [open3d.com/docs](www.open3d.com/docs)
+## Python
 
-#### install open3d on MacOS & Windows
-```
-pip install open3d
-```
+The object completion is ran with Python
 
 ### Installing the environment
 
@@ -43,6 +39,9 @@ pip install pip-autoremove
 # remove "package" plus its dependencies:
 pip-autoremove "package" -y
 ```
+## Unity
+
+The voxel editor tool is made in Unity using the Geosharpi Package
 
 ## Thesis
 https://www.overleaf.com/3584264975pqwgqhngknpp#422092

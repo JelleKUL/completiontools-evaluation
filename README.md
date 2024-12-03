@@ -4,44 +4,20 @@ The evaluation code for the completion tools
 ## Getting Started
 This document is meant to keep track of all your work, use it to track sources, progress and problems.
 
-## Python
+## Workflow
 
-The object completion is ran with Python
+### Pre processing
+Use the [`pre-processing.ipynb`](pre-processing.ipynb) file to convert meshes to SDF's. The SDF's will be saved to a folder of your choice as a `.pt` tensor file.
 
-### Installing the environment
+### Voxel Selection
+The voxel selection is performed in Unity using [GeoSharpi](https://github.com/JelleKUL/GeoSharpi). The user interface allows you to import a mesh, select a number of voxels and export them as json files.
 
-1. Download `python 3.9` from: [python.org](www.python.org)
-2. Enter the following commands in the `terminal`
-    ``` bash
-    # Windows
-    # Create the virtual environment
-    py -3.9 -m venv env
-    # Activate the virtual environment
-    ./env/Scripts/activate
-    # Install the packages
-    pip install -r requirements.txt
-    ```
-    
-    ``` bash
-    # MacOS / Linux
-    # Create the virtual environment
-     python3 -m venv "env name"
-    # Activate the virtual environment
-    source "env name"/bin/activate
-    # Install the packages
-    pip install -r requirements.txt
-    ``` 
+### Object completion
+Object completion is performed in the [`AutoSDF.ipynb`](AutoSDF.ipynb) file using the voxel selection from GeoSharpi and the SDF from Pre-processing.
 
-### Removing pip packages plus all its dependencies
-``` bash
-# install pip-autoremove
-pip install pip-autoremove
-# remove "package" plus its dependencies:
-pip-autoremove "package" -y
-```
-## Unity
-
-The voxel editor tool is made in Unity using the Geosharpi Package
+### Texture Completion
+Texture completion is performed using a command line tool explained in [`TEXTure.ipynb`](TEXTure.ipynb)
 
 ## Thesis
+The thesis can be viewed here:
 https://www.overleaf.com/3584264975pqwgqhngknpp#422092

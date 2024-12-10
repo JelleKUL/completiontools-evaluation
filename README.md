@@ -18,6 +18,3 @@ Object completion is performed in the [`AutoSDF.ipynb`](AutoSDF.ipynb) file usin
 ### Texture Completion
 Texture completion is performed using a command line tool explained in [`TEXTure.ipynb`](TEXTure.ipynb)
 
-## Thesis
-The thesis can be viewed here:
-https://www.overleaf.com/3584264975pqwgqhngknpp#422092

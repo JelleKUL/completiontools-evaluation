@@ -1,5 +1,9 @@
 # helper functions to convert between different modalities
-import mesh2sdf
+#import mesh2sdf
+import os
+os.environ['PYOPENGL_PLATFORM'] = 'egl'
+from mesh_to_sdf import mesh_to_voxels
+
 import trimesh
 from trimesh import Trimesh
 import open3d as o3d
@@ -31,7 +35,7 @@ def read_voxel_file(jsonPath):
 def make_dir_if_not_exist(path):
     if(not os.path.exists(path)):
         print("Folder does not exist, creating the folder: " + path)
-        os.mkdir(path)
+        os.makedirs(path)
 
 # Open3d
 
@@ -202,9 +206,10 @@ def mesh_to_sdf_tensor(mesh: Trimesh, resolution:int = 64, recenter: bool = True
     vertices = (vertices - center) * scale
 
     # fix mesh
-    sdf, mesh = mesh2sdf.compute(
-        vertices, mesh.faces, resolution, fix=(not mesh.is_watertight), level=2 / resolution, return_mesh=True)
-    
+    #sdf, mesh = mesh2sdf.compute(
+    #    vertices, mesh.faces, resolution, fix=(not mesh.is_watertight), level=2 / resolution, return_mesh=True)
+    #sdf = None
+    sdf = mesh_to_voxels(mesh, resolution-2, pad=True)
     mesh.vertices = mesh.vertices / scale + center
     return sdf, mesh
 

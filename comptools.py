@@ -1,9 +1,8 @@
 # helper functions to convert between different modalities
-#import mesh2sdf
+
 import os
 os.environ['PYOPENGL_PLATFORM'] = 'egl'
-from mesh_to_sdf import mesh_to_voxels
-
+from sys import platform
 import trimesh
 from trimesh import Trimesh
 import open3d as o3d
@@ -184,7 +183,7 @@ def get_point_triangle_colors_open3d(mesh: o3d.geometry.TriangleMesh, points:np.
 
 # Trimesh
 
-def mesh_to_sdf_tensor(mesh: Trimesh, resolution:int = 64, recenter: bool = True, scaledownFactor = 8):
+def mesh_to_sdf_tensor(mesh: Trimesh, resolution:int = 64, recenter: bool = True, scaleFactor = 1):
     """Creates a normalized signed distance function from a provided mesh, using a voxel grid
 
     Args:
@@ -202,16 +201,20 @@ def mesh_to_sdf_tensor(mesh: Trimesh, resolution:int = 64, recenter: bool = True
     if(recenter):
         center = (bbmin + bbmax) * 0.5
     else : center = 0
-    scale = (2-scaledownFactor/resolution) / (bbmax - bbmin).max()
-    vertices = (vertices - center) * scale
+    vertices = (vertices - center) * scaleFactor
 
-    # fix mesh
-    #sdf, mesh = mesh2sdf.compute(
-    #    vertices, mesh.faces, resolution, fix=(not mesh.is_watertight), level=2 / resolution, return_mesh=True)
-    #sdf = None
-    sdf = mesh_to_voxels(mesh, resolution-2, pad=True)
-    mesh.vertices = mesh.vertices / scale + center
-    return sdf, mesh
+    
+    if platform == "linux" or platform == "linux2":
+        # linux
+        from mesh_to_sdf import mesh_to_voxels
+        sdf = mesh_to_voxels(mesh, resolution-2, pad=True)
+        mesh.vertices = mesh.vertices / scaleFactor + center
+        return sdf, mesh
+    else:
+        # Windows and macos
+        import mesh2sdf
+        sdf, mesh = mesh2sdf.compute( vertices, mesh.faces, resolution, fix=(not mesh.is_watertight), level=2 / resolution, return_mesh=True)
+        return sdf, mesh
 
 def get_point_colors_trimesh(mesh, points):
     

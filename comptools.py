@@ -16,6 +16,7 @@ from scipy.spatial import cKDTree as KDTree
 import os
 import scipy
 import json
+from skimage import measure
 
 def read_voxel_file(jsonPath):
     # Load the JSON file
@@ -209,6 +210,10 @@ def mesh_to_sdf_tensor(mesh: Trimesh, resolution:int = 64, recenter: bool = True
         from mesh_to_sdf import mesh_to_voxels
         sdf = mesh_to_voxels(mesh, resolution-2, pad=True)
         mesh.vertices = mesh.vertices / scaleFactor + center
+        # Marching Cubes to extract the 0-level isosurface
+        verts, faces, normals, _ = measure.marching_cubes(sdf, level=2 / resolution, spacing=(1.0/resolution, 1.0/resolution, 1.0/resolution))
+        # Convert to Trimesh format
+        mesh = trimesh.Trimesh(vertices=verts, faces=faces, vertex_normals=normals, process=False)
         return sdf, mesh
     else:
         # Windows and macos
